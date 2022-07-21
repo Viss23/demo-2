@@ -1,20 +1,20 @@
 import { BaseController } from "../common/base.controller";
 import { LoggerService } from "../logger/logger.service";
 import { NextFunction, Response, Request } from "express";
+import { HTTPError } from "../errors/http-error.class";
 
 export class UserController extends BaseController {
   constructor(logger: LoggerService) {
     super(logger);
 
     this.bindRoutes([
-      { path: "/register", method: "post", func: this.register },
-      { path: "/login", method: "get", func: this.login },
+      { path: "/register", method: "get", func: this.register },
+      { path: "/login", method: "post", func: this.login },
     ]);
   }
 
   login(req: Request, res: Response, next: NextFunction) {
-    console.log("ss");
-    this.ok(res, "login");
+    next(new HTTPError(401, "login error", "login"));
   }
 
   register(req: Request, res: Response, next: NextFunction) {
