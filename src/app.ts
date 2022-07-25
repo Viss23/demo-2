@@ -1,10 +1,11 @@
 import express, { Express } from 'express';
 import { Server } from 'http';
 import { inject, injectable } from 'inversify';
-import { ExceptionFilter } from './errors/exception.filter.js';
-import { ILogger } from './logger/logger.interface.js';
-import { TYPES } from './types.js';
-import { UserController } from './users/users.controller.js';
+import { ExceptionFilter } from './errors/exception.filter';
+import { ILogger } from './logger/logger.interface';
+import { TYPES } from './types';
+import { UserController } from './users/users.controller';
+import { json } from 'body-parser';
 import 'reflect-metadata';
 
 @injectable()
@@ -22,6 +23,10 @@ export class App {
 		this.port = 8000;
 	}
 
+	userMiddleware(): void {
+		this.app.use(json());
+	}
+
 	userRoutes(): void {
 		this.app.use('/users', this.userController.router);
 	}
@@ -31,6 +36,7 @@ export class App {
 	}
 
 	public async init(): Promise<void> {
+		this.userMiddleware();
 		this.userRoutes();
 		this.useExceptionsFilters();
 		this.server = this.app.listen(this.port, () => {
