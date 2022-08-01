@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import { UserModel } from '@prisma/client';
 import { Container } from 'inversify';
 import { IConfigService } from '../config/config.service.interface';
-import { appContainer } from '../main';
 import { TYPES } from '../types';
 import { User } from './user.entity';
 import { IUsersRepository } from './users.repository.interface';
